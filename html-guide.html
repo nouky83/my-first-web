@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<!-- 이 줄은 "이 문서는 HTML 문서입니다"라고 브라우저에게 알려줍니다. -->
+<html lang="ko">
+
+<!-- head: 화면에 보이지 않는 정보(문서 설정, 제목 등)를 담는 곳 -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap">
+    <!-- 꾸미기(CSS)는 style.css 파일에 모아 두었습니다 -->
+    <link rel="stylesheet" href="style.css">
+    <!-- 다크/라이트 모드 스위치 동작은 theme.js 파일에 있습니다 -->
+    <script src="theme.js"></script>
+    <title>HTML 처음 배우기</title>
+</head>
+
+<!-- body: 화면에 실제로 보이는 내용을 담는 곳 -->
+<body>
+    <!-- 오른쪽 위 다크/라이트 모드 스위치 -->
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="다크/라이트 모드 바꾸기"></button>
+
+    <h1>HTML 처음 배우기</h1>
+    <p>HTML을 전혀 몰라도 괜찮습니다. 이 페이지를 위에서부터 차근차근 읽어 보세요.</p>
+    <p><b>팁:</b> 이 페이지에서 마우스 오른쪽 버튼을 누르고 <b>"페이지 소스 보기"</b>(Ctrl+U)를 누르면,
+       이 페이지가 어떤 HTML로 만들어졌는지 직접 볼 수 있습니다. 설명과 소스를 함께 보면 훨씬 이해가 쉽습니다.</p>
+
+    <!-- 목차: 같은 페이지 안의 특정 위치로 이동하는 링크입니다. href="#이름" 은 id="이름" 인 곳으로 이동합니다. -->
+    <h2>목차</h2>
+    <ol>
+        <li><a href="#what">HTML이란?</a></li>
+        <li><a href="#tag">태그란?</a></li>
+        <li><a href="#skeleton">HTML 문서의 기본 뼈대</a></li>
+        <li><a href="#heading">제목과 문단</a></li>
+        <li><a href="#text">글자 꾸미기</a></li>
+        <li><a href="#list">목록</a></li>
+        <li><a href="#link">링크</a></li>
+        <li><a href="#image">이미지</a></li>
+        <li><a href="#table">표</a></li>
+        <li><a href="#comment">주석</a></li>
+        <li><a href="#practice">직접 해보기</a></li>
+        <li><a href="#summary">한눈에 정리</a></li>
+    </ol>
+
+    <hr>
+
+    <!-- ========== 1. HTML이란? ========== -->
+    <h2 id="what">1. HTML이란?</h2>
+    <p><b>HTML</b>은 <b>웹페이지의 내용과 구조</b>를 만드는 언어입니다.</p>
+    <p>집 짓기에 비유하면 이렇습니다.</p>
+    <ul>
+        <li><b>HTML</b> = 집의 뼈대 (벽, 방, 문). <i>무엇이 어디에 있는지</i>를 정합니다.</li>
+        <li><b>CSS</b> = 인테리어 (색, 크기, 배치). <i>어떻게 보일지</i>를 정합니다.</li>
+        <li><b>JavaScript</b> = 전기와 수도 (움직임, 반응). <i>어떻게 동작할지</i>를 정합니다.</li>
+    </ul>
+    <p>지금은 HTML을 배웁니다. 이 페이지의 꾸밈(색, 글꼴, 상자 모양)은 <code>style.css</code> 파일에 따로 모아 두었으니, CSS가 궁금해지면 그 파일을 열어 보세요.</p>
+
+    <!-- ========== 2. 태그란? ========== -->
+    <h2 id="tag">2. 태그란?</h2>
+    <p>HTML은 <b>태그</b>로 이루어집니다. 태그는 "이 글자는 제목이야", "이건 문단이야"처럼
+       내용에 <b>이름표</b>를 붙이는 것입니다.</p>
+    <p>태그는 보통 <b>여는 태그</b>와 <b>닫는 태그</b>가 한 쌍입니다.</p>
+
+    <!-- pre: 입력한 그대로(띄어쓰기, 줄바꿈 포함) 보여줍니다. -->
+    <!-- &lt; 는 < 기호, &gt; 는 > 기호입니다. 그냥 쓰면 브라우저가 진짜 태그로 착각하기 때문에 이렇게 씁니다. -->
+<pre>
+&lt;p&gt;안녕하세요&lt;/p&gt;
+ ↑      ↑       ↑
+여는태그  내용   닫는태그 (앞에 / 가 붙음)
+</pre>
+
+    <p>어떤 태그는 내용이 없어서 닫는 태그가 없습니다. 예: 줄바꿈 <code>&lt;br&gt;</code>, 가로줄 <code>&lt;hr&gt;</code>, 이미지 <code>&lt;img&gt;</code></p>
+
+    <p>태그에는 <b>속성</b>을 붙여 추가 정보를 줄 수 있습니다. 속성은 <code>이름="값"</code> 형태로 여는 태그 안에 씁니다.</p>
+<pre>
+&lt;a href="https://www.google.com"&gt;구글&lt;/a&gt;
+   ↑
+   속성: 링크가 어디로 갈지 알려줌
+</pre>
+
+    <!-- ========== 3. 기본 뼈대 ========== -->
+    <h2 id="skeleton">3. HTML 문서의 기본 뼈대</h2>
+    <p>모든 HTML 파일은 아래와 같은 모양으로 시작합니다. 외울 필요 없이, 복사해서 쓰면 됩니다.</p>
+<pre>
+&lt;!DOCTYPE html&gt;          ← "이건 HTML 문서야"라는 선언
+&lt;html lang="ko"&gt;         ← HTML 시작 (한국어 문서)
+&lt;head&gt;                   ← 보이지 않는 설정 정보
+    &lt;meta charset="UTF-8"&gt;   ← 한글이 깨지지 않게 하는 설정
+    &lt;title&gt;페이지 제목&lt;/title&gt; ← 브라우저 탭에 표시되는 제목
+&lt;/head&gt;
+&lt;body&gt;                   ← 여기부터 화면에 보이는 내용
+    &lt;h1&gt;안녕하세요&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;                  ← HTML 끝
+</pre>
+    <p>지금 이 브라우저 탭 위쪽을 보세요. "HTML 처음 배우기"라고 쓰여 있죠? 그게 <code>&lt;title&gt;</code>입니다.</p>
+
+    <!-- ========== 4. 제목과 문단 ========== -->
+    <h2 id="heading">4. 제목과 문단</h2>
+    <p>제목은 <code>&lt;h1&gt;</code>부터 <code>&lt;h6&gt;</code>까지 6단계가 있습니다. 숫자가 작을수록 큰 제목입니다.</p>
+
+    <p><b>코드:</b></p>
+<pre>
+&lt;h1&gt;가장 큰 제목&lt;/h1&gt;
+&lt;h2&gt;두 번째 제목&lt;/h2&gt;
+&lt;h3&gt;세 번째 제목&lt;/h3&gt;
+&lt;p&gt;이것은 문단입니다.&lt;/p&gt;
+&lt;p&gt;첫째 줄&lt;br&gt;둘째 줄&lt;/p&gt;
+</pre>
+
+    <p><b>결과:</b></p>
+    <!-- blockquote: 인용 블록. 여기서는 "결과"를 들여쓰기해서 구분하려고 사용했습니다. -->
+    <blockquote>
+        <h1>가장 큰 제목</h1>
+        <h2>두 번째 제목</h2>
+        <h3>세 번째 제목</h3>
+        <p>이것은 문단입니다.</p>
+        <p>첫째 줄<br>둘째 줄</p>
+    </blockquote>
+
+    <p><b>알아둘 점:</b> HTML 코드에서 엔터를 여러 번 쳐도 화면에서는 줄이 바뀌지 않습니다.
+       줄을 바꾸려면 <code>&lt;br&gt;</code>을 쓰거나 새 <code>&lt;p&gt;</code>를 만들어야 합니다.</p>
+
+    <!-- ========== 5. 글자 꾸미기 ========== -->
+    <h2 id="text">5. 글자 꾸미기</h2>
+    <table border="1" cellpadding="6">
+        <tr>
+            <th>코드</th>
+            <th>결과</th>
+            <th>뜻</th>
+        </tr>
+        <tr>
+            <td><code>&lt;b&gt;굵게&lt;/b&gt;</code></td>
+            <td><b>굵게</b></td>
+            <td>bold</td>
+        </tr>
+        <tr>
+            <td><code>&lt;i&gt;기울임&lt;/i&gt;</code></td>
+            <td><i>기울임</i></td>
+            <td>italic</td>
+        </tr>
+        <tr>
+            <td><code>&lt;u&gt;밑줄&lt;/u&gt;</code></td>
+            <td><u>밑줄</u></td>
+            <td>underline</td>
+        </tr>
+        <tr>
+            <td><code>&lt;mark&gt;형광펜&lt;/mark&gt;</code></td>
+            <td><mark>형광펜</mark></td>
+            <td>강조 표시</td>
+        </tr>
+        <tr>
+            <td><code>H&lt;sub&gt;2&lt;/sub&gt;O</code></td>
+            <td>H<sub>2</sub>O</td>
+            <td>아래 첨자</td>
+        </tr>
+        <tr>
+            <td><code>x&lt;sup&gt;2&lt;/sup&gt;</code></td>
+            <td>x<sup>2</sup></td>
+            <td>위 첨자</td>
+        </tr>
+    </table>
+
+    <!-- ========== 6. 목록 ========== -->
+    <h2 id="list">6. 목록</h2>
+    <p>목록은 두 종류가 있습니다. 목록 안의 각 항목은 <code>&lt;li&gt;</code>(list item)로 씁니다.</p>
+
+    <h3>순서 없는 목록 (ul = unordered list)</h3>
+<pre>
+&lt;ul&gt;
+    &lt;li&gt;사과&lt;/li&gt;
+    &lt;li&gt;바나나&lt;/li&gt;
+&lt;/ul&gt;
+</pre>
+    <p><b>결과:</b></p>
+    <blockquote>
+        <ul>
+            <li>사과</li>
+            <li>바나나</li>
+        </ul>
+    </blockquote>
+
+    <h3>순서 있는 목록 (ol = ordered list)</h3>
+<pre>
+&lt;ol&gt;
+    &lt;li&gt;일어나기&lt;/li&gt;
+    &lt;li&gt;세수하기&lt;/li&gt;
+&lt;/ol&gt;
+</pre>
+    <p><b>결과:</b></p>
+    <blockquote>
+        <ol>
+            <li>일어나기</li>
+            <li>세수하기</li>
+        </ol>
+    </blockquote>
+
+    <!-- ========== 7. 링크 ========== -->
+    <h2 id="link">7. 링크</h2>
+    <p>링크는 <code>&lt;a&gt;</code> 태그로 만듭니다. <code>href</code> 속성에 이동할 주소를 씁니다.</p>
+<pre>
+&lt;a href="https://www.naver.com"&gt;네이버로 가기&lt;/a&gt;
+&lt;a href="https://www.naver.com" target="_blank"&gt;새 탭에서 네이버 열기&lt;/a&gt;
+&lt;a href="index.html"&gt;내 첫 페이지로 가기&lt;/a&gt;
+&lt;a href="#what"&gt;이 페이지의 1번 항목으로 가기&lt;/a&gt;
+</pre>
+    <p><b>결과:</b> (직접 눌러 보세요)</p>
+    <blockquote>
+        <p><a href="https://www.naver.com">네이버로 가기</a></p>
+        <p><a href="https://www.naver.com" target="_blank">새 탭에서 네이버 열기</a></p>
+        <p><a href="index.html">내 첫 페이지로 가기</a> (같은 폴더의 index.html)</p>
+        <p><a href="#what">이 페이지의 1번 항목으로 가기</a></p>
+    </blockquote>
+
+    <!-- ========== 8. 이미지 ========== -->
+    <h2 id="image">8. 이미지</h2>
+    <p>이미지는 <code>&lt;img&gt;</code> 태그로 넣습니다. 닫는 태그가 없습니다.</p>
+<pre>
+&lt;img src="cat.jpg" alt="고양이 사진" width="300"&gt;
+</pre>
+    <ul>
+        <li><code>src</code>: 이미지 파일 위치 (같은 폴더에 cat.jpg가 있어야 함)</li>
+        <li><code>alt</code>: 이미지를 불러오지 못했을 때 대신 보여줄 설명</li>
+        <li><code>width</code>: 이미지 너비 (픽셀)</li>
+    </ul>
+    <p><b>결과:</b> 이 폴더에는 cat.jpg가 없어서, 그림 대신 <code>alt</code> 글자가 보입니다.</p>
+    <blockquote>
+        <img src="cat.jpg" alt="고양이 사진" width="300">
+    </blockquote>
+    <p>"my first web" 폴더에 cat.jpg라는 사진을 넣고 새로고침(F5)하면 진짜 사진이 나타납니다.</p>
+
+    <!-- ========== 9. 표 ========== -->
+    <h2 id="table">9. 표</h2>
+    <p>표는 여러 태그를 조합해서 만듭니다.</p>
+    <ul>
+        <li><code>&lt;table&gt;</code>: 표 전체</li>
+        <li><code>&lt;tr&gt;</code>: 한 줄 (table row)</li>
+        <li><code>&lt;th&gt;</code>: 제목 칸 (table header, 굵게 표시됨)</li>
+        <li><code>&lt;td&gt;</code>: 일반 칸 (table data)</li>
+    </ul>
+<pre>
+&lt;table border="1"&gt;
+    &lt;tr&gt;
+        &lt;th&gt;이름&lt;/th&gt;
+        &lt;th&gt;나이&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;철수&lt;/td&gt;
+        &lt;td&gt;20&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;영희&lt;/td&gt;
+        &lt;td&gt;22&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+</pre>
+    <p><b>결과:</b></p>
+    <blockquote>
+        <table border="1">
+            <tr>
+                <th>이름</th>
+                <th>나이</th>
+            </tr>
+            <tr>
+                <td>철수</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>영희</td>
+                <td>22</td>
+            </tr>
+        </table>
+    </blockquote>
+
+    <!-- ========== 10. 주석 ========== -->
+    <h2 id="comment">10. 주석</h2>
+    <p>주석은 <b>화면에 보이지 않는 메모</b>입니다. 코드에 설명을 남길 때 씁니다.</p>
+<pre>
+&lt;!-- 이 글은 화면에 보이지 않습니다 --&gt;
+</pre>
+    <p>이 페이지의 소스(Ctrl+U)를 보면 주석이 곳곳에 달려 있습니다. 화면에는 안 보이지만 소스에는 있죠.</p>
+
+    <!-- ========== 11. 직접 해보기 ========== -->
+    <h2 id="practice">11. 직접 해보기</h2>
+    <p>읽기만 하는 것보다 직접 고쳐 보는 게 가장 빨리 배우는 방법입니다.</p>
+    <ol>
+        <li>Cursor에서 <b>index.html</b> 파일을 엽니다.</li>
+        <li><code>&lt;h1&gt;안녕하세요!&lt;/h1&gt;</code>의 글자를 자기 이름으로 바꿉니다.</li>
+        <li>저장합니다 (Ctrl+S).</li>
+        <li>브라우저에서 index.html을 새로고침(F5)해서 바뀐 걸 확인합니다.</li>
+    </ol>
+
+    <h3>연습 문제</h3>
+    <p>아래 문제를 index.html에 직접 만들어 보세요. 막히면 "정답 보기"를 눌러 보세요.</p>
+
+    <!-- details / summary: 누르면 펼쳐지는 접기 상자입니다. -->
+    <p><b>문제 1.</b> "내가 좋아하는 음식"이라는 h2 제목과, 음식 3개가 들어간 순서 없는 목록을 만들어 보세요.</p>
+    <details>
+        <summary>정답 보기</summary>
+<pre>
+&lt;h2&gt;내가 좋아하는 음식&lt;/h2&gt;
+&lt;ul&gt;
+    &lt;li&gt;김치찌개&lt;/li&gt;
+    &lt;li&gt;떡볶이&lt;/li&gt;
+    &lt;li&gt;치킨&lt;/li&gt;
+&lt;/ul&gt;
+</pre>
+    </details>
+
+    <p><b>문제 2.</b> "유튜브"라는 글자를 누르면 유튜브(https://www.youtube.com)가 새 탭에서 열리게 만들어 보세요.</p>
+    <details>
+        <summary>정답 보기</summary>
+<pre>
+&lt;a href="https://www.youtube.com" target="_blank"&gt;유튜브&lt;/a&gt;
+</pre>
+    </details>
+
+    <p><b>문제 3.</b> "오늘 날씨는 <b>맑음</b>입니다." 처럼 '맑음'만 굵게 보이는 문단을 만들어 보세요.</p>
+    <details>
+        <summary>정답 보기</summary>
+<pre>
+&lt;p&gt;오늘 날씨는 &lt;b&gt;맑음&lt;/b&gt;입니다.&lt;/p&gt;
+</pre>
+    </details>
+
+    <!-- ========== 12. 한눈에 정리 ========== -->
+    <h2 id="summary">12. 한눈에 정리</h2>
+    <table border="1" cellpadding="6">
+        <tr>
+            <th>태그</th>
+            <th>하는 일</th>
+        </tr>
+        <tr><td><code>&lt;h1&gt;</code> ~ <code>&lt;h6&gt;</code></td><td>제목</td></tr>
+        <tr><td><code>&lt;p&gt;</code></td><td>문단</td></tr>
+        <tr><td><code>&lt;br&gt;</code></td><td>줄바꿈</td></tr>
+        <tr><td><code>&lt;hr&gt;</code></td><td>가로줄</td></tr>
+        <tr><td><code>&lt;b&gt;</code>, <code>&lt;i&gt;</code>, <code>&lt;u&gt;</code></td><td>굵게, 기울임, 밑줄</td></tr>
+        <tr><td><code>&lt;ul&gt;</code>, <code>&lt;ol&gt;</code>, <code>&lt;li&gt;</code></td><td>목록</td></tr>
+        <tr><td><code>&lt;a href=""&gt;</code></td><td>링크</td></tr>
+        <tr><td><code>&lt;img src="" alt=""&gt;</code></td><td>이미지</td></tr>
+        <tr><td><code>&lt;table&gt;</code>, <code>&lt;tr&gt;</code>, <code>&lt;th&gt;</code>, <code>&lt;td&gt;</code></td><td>표</td></tr>
+        <tr><td><code>&lt;!-- --&gt;</code></td><td>주석 (화면에 안 보이는 메모)</td></tr>
+    </table>
+
+    <hr>
+    <p><a href="#">맨 위로 돌아가기</a> | <a href="index.html">나의 첫 웹페이지로 가기</a></p>
+
+</body>
+</html>

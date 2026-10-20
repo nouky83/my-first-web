@@ -1,0 +1,689 @@
+/* =========================================================
+   style.css : 세 페이지가 함께 쓰는 꾸미기 파일
+   HTML 파일의 <head> 안에 있는
+   <link rel="stylesheet" href="style.css"> 한 줄로 연결됩니다.
+   ========================================================= */
+
+/* ---------- 색상 모음 (여기 값만 바꾸면 전체 색이 바뀝니다) ---------- */
+:root {
+    --c1: #7c3aed;          /* 보라 */
+    --c2: #ec4899;          /* 분홍 */
+    --c3: #f59e0b;          /* 주황 */
+    --c4: #06b6d4;          /* 하늘 */
+    --rainbow: linear-gradient(120deg, var(--c1), var(--c2), var(--c3));
+
+    --bg: #fbf7ff;          /* 페이지 배경 */
+    --paper: rgba(255, 255, 255, 0.78);  /* 반투명 카드 배경 */
+    --text: #2a2238;        /* 기본 글자 */
+    --muted: #6d6480;       /* 흐린 글자 */
+    --line: rgba(124, 58, 237, 0.16);    /* 테두리 선 */
+    --accent: #7c3aed;      /* 강조색 */
+    --accent-soft: rgba(124, 58, 237, 0.08);
+    --code-bg: #f3edff;     /* 코드 배경 */
+    --mark: #fde68a;        /* 형광펜 */
+    --shadow: 0 10px 30px rgba(124, 58, 237, 0.12);
+}
+
+/* 다크 모드 색
+   - 스위치를 한 번도 안 눌렀으면 : 컴퓨터 설정(다크/라이트)을 따라갑니다.
+   - 스위치를 눌렀으면 : <html data-theme="dark"> 또는 "light" 가 붙어서 그쪽을 따릅니다.
+   그래서 같은 색 목록이 아래에 두 번 나옵니다. 색을 바꿀 땐 두 곳 모두 바꿔 주세요. */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --c1: #a78bfa;
+        --c2: #f472b6;
+        --c3: #fbbf24;
+        --c4: #22d3ee;
+        --bg: #120d1f;
+        --paper: rgba(36, 28, 56, 0.72);
+        --text: #f1ecfb;
+        --muted: #b3a8c9;
+        --line: rgba(167, 139, 250, 0.22);
+        --accent: #c4b5fd;
+        --accent-soft: rgba(167, 139, 250, 0.12);
+        --code-bg: #1d1630;
+        --mark: #7c5a12;
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+}
+
+:root[data-theme="dark"] {
+    --c1: #a78bfa;
+    --c2: #f472b6;
+    --c3: #fbbf24;
+    --c4: #22d3ee;
+    --bg: #120d1f;
+    --paper: rgba(36, 28, 56, 0.72);
+    --text: #f1ecfb;
+    --muted: #b3a8c9;
+    --line: rgba(167, 139, 250, 0.22);
+    --accent: #c4b5fd;
+    --accent-soft: rgba(167, 139, 250, 0.12);
+    --code-bg: #1d1630;
+    --mark: #7c5a12;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* ---------- 오른쪽 위 다크/라이트 스위치 ---------- */
+.theme-toggle {
+    position: fixed;            /* 스크롤해도 항상 그 자리에 */
+    top: 16px;
+    right: 16px;
+    z-index: 100;
+    width: 64px;
+    height: 34px;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    box-shadow: var(--shadow);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+}
+
+.theme-toggle::before {         /* 스위치 안에서 움직이는 동그라미 */
+    content: "☀️";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #fde68a, #f59e0b);
+    font-size: 14px;
+    line-height: 1;
+    transition: transform 0.3s, background 0.3s;
+}
+
+/* 다크 모드일 때 : 동그라미가 오른쪽으로 가고 달로 바뀜 */
+:root[data-theme="dark"] .theme-toggle::before {
+    content: "🌙";
+    transform: translateX(30px);
+    background: linear-gradient(135deg, #a78bfa, #4c1d95);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .theme-toggle::before {
+        content: "🌙";
+        transform: translateX(30px);
+        background: linear-gradient(135deg, #a78bfa, #4c1d95);
+    }
+}
+
+.theme-toggle:hover {
+    border-color: var(--c2);
+}
+
+.theme-toggle:focus-visible {
+    outline: 3px solid var(--c2);
+    outline-offset: 2px;
+}
+
+/* ---------- 움직이는 효과 ---------- */
+@keyframes float {              /* 둥둥 떠다니기 */
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50%      { transform: translateY(-10px) rotate(8deg); }
+}
+
+@keyframes shine {              /* 무지개 색이 흐르기 */
+    0%   { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+}
+
+@keyframes rise {               /* 아래에서 스르륵 나타나기 */
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* 움직임을 줄이도록 설정한 사람에게는 애니메이션 끄기 */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* ---------- 페이지 전체 ---------- */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;    /* 목차를 누르면 부드럽게 이동 */
+}
+
+body {
+    max-width: 780px;           /* 글이 너무 옆으로 길어지지 않게 */
+    margin: 0 auto;             /* 가운데 정렬 */
+    padding: 56px 20px 96px;
+    color: var(--text);
+    font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+    font-size: 17px;
+    line-height: 1.75;
+    word-break: keep-all;       /* 한글 단어가 중간에 끊기지 않게 */
+
+    /* 배경에 색색의 빛 번짐 */
+    background-color: var(--bg);
+    background-image:
+        radial-gradient(600px circle at 10% 0%,   rgba(124, 58, 237, 0.20), transparent 60%),
+        radial-gradient(500px circle at 95% 15%,  rgba(236, 72, 153, 0.18), transparent 60%),
+        radial-gradient(600px circle at 80% 100%, rgba(6, 182, 212, 0.16),  transparent 60%),
+        radial-gradient(500px circle at 0% 85%,   rgba(245, 158, 11, 0.14), transparent 60%);
+    background-attachment: fixed;
+}
+
+/* ---------- 제목 ---------- */
+h1 {
+    margin: 0 0 12px;
+    font-size: 2.6rem;
+    font-weight: 900;
+    line-height: 1.25;
+    letter-spacing: -0.03em;
+
+    /* 글자 안을 무지개색으로 채우기 */
+    background: linear-gradient(90deg, var(--c1), var(--c2), var(--c3), var(--c2), var(--c1));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shine 6s linear infinite;
+}
+
+h1::after {                     /* 큰 제목 아래 무지개 밑줄 */
+    content: "";
+    display: block;
+    width: 72px;
+    height: 6px;
+    margin-top: 16px;
+    border-radius: 3px;
+    background: var(--rainbow);
+}
+
+h2 {
+    position: relative;
+    margin: 64px 0 18px;
+    padding-left: 18px;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--text);
+    scroll-margin-top: 16px;
+}
+
+h2::before {                    /* 제목 왼쪽 색 막대 */
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.2em;
+    bottom: 0.2em;
+    width: 6px;
+    border-radius: 3px;
+    background: linear-gradient(180deg, var(--c1), var(--c2));
+}
+
+h3 {
+    margin: 28px 0 10px;
+    font-size: 1.1rem;
+    color: var(--accent);
+}
+
+p {
+    margin: 0 0 14px;
+}
+
+/* ---------- 링크 ---------- */
+a {
+    color: var(--accent);
+    font-weight: 700;
+    text-decoration: none;
+    background-image: linear-gradient(90deg, var(--c1), var(--c2));
+    background-size: 100% 2px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.25s, color 0.25s;
+}
+
+a:hover {
+    color: #fff;
+    background-size: 100% 100%;  /* 밑줄이 차올라 배경이 됨 */
+    border-radius: 4px;
+}
+
+/* ---------- 목록 ---------- */
+ul, ol {
+    padding-left: 1.4em;
+}
+
+li {
+    margin-bottom: 4px;
+}
+
+li::marker {
+    color: var(--c2);
+    font-weight: 700;
+}
+
+/* ---------- 공통 카드 느낌 (반투명 유리) ---------- */
+h2 + ol,
+table,
+pre,
+blockquote,
+details {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+}
+
+/* 목차 : 제목 "목차" 바로 다음에 오는 번호 목록 */
+h2 + ol {
+    margin: 0;
+    padding: 20px 24px 20px 48px;
+    columns: 2;                 /* 두 줄로 나눠 보이기 */
+    animation: rise 0.6s ease-out both;
+}
+
+
+/* ---------- 가로줄 ---------- */
+hr {
+    height: 3px;
+    margin: 56px 0;
+    border: none;
+    border-radius: 2px;
+    background: var(--rainbow);
+    opacity: 0.6;
+}
+
+/* ---------- 표 ---------- */
+table {
+    width: 100%;
+    margin: 8px 0 24px;
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 11px 16px;
+    border: none !important;
+    border-bottom: 1px solid var(--line) !important;
+    text-align: left;
+    vertical-align: top;
+}
+
+th {
+    background: var(--rainbow);
+    color: #fff;
+    font-weight: 700;
+}
+
+tr:last-child td {
+    border-bottom: none !important;
+}
+
+td {
+    transition: background 0.2s;
+}
+
+tr:hover td {
+    background: var(--accent-soft);
+}
+
+/* ---------- 코드 ---------- */
+code {
+    padding: 2px 7px;
+    border-radius: 6px;
+    background: var(--code-bg);
+    color: var(--c2);
+    font-family: Consolas, "D2Coding", monospace;
+    font-size: 0.9em;
+}
+
+pre {
+    position: relative;
+    margin: 8px 0 20px;
+    padding: 30px 20px 18px;
+    font-family: Consolas, "D2Coding", monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    overflow-x: auto;           /* 코드가 길면 상자 안에서만 옆으로 스크롤 */
+}
+
+pre::before {                   /* 코드 상자 위의 신호등 점 3개 */
+    content: "";
+    position: absolute;
+    top: 11px;
+    left: 16px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ff5f57;
+    box-shadow: 16px 0 0 #febc2e, 32px 0 0 #28c840;
+}
+
+/* ---------- "결과" 상자 (blockquote) ---------- */
+blockquote {
+    position: relative;
+    margin: 8px 0 24px;
+    padding: 18px 22px;
+    border-left: 6px solid var(--c2);
+}
+
+blockquote h1 {
+    font-size: 2rem;
+    animation: none;
+}
+
+blockquote h1::after,
+blockquote h2::before {
+    display: none;              /* 결과 상자 속 제목에는 장식 빼기 */
+}
+
+blockquote h1, blockquote h2, blockquote h3 {
+    margin: 8px 0;
+    padding-left: 0;
+}
+
+blockquote table {
+    width: auto;
+    box-shadow: none;
+}
+
+/* ---------- 정답 보기 (details) ---------- */
+details {
+    margin: 0 0 28px;
+    padding: 14px 18px;
+}
+
+summary {
+    cursor: pointer;
+    color: var(--accent);
+    font-weight: 700;
+}
+
+summary:hover {
+    color: var(--c2);
+}
+
+details[open] summary {
+    margin-bottom: 10px;
+}
+
+details pre {
+    box-shadow: none;
+}
+
+/* ---------- 이미지 ---------- */
+img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+}
+
+/* ---------- 형광펜 ---------- */
+mark {
+    background: var(--mark);
+    color: inherit;
+    padding: 0 3px;
+    border-radius: 3px;
+}
+
+/* =========================================================
+   첫 페이지(index.html) 전용
+   ========================================================= */
+
+/* 맨 위 큰 인사 상자 */
+.hero {
+    position: relative;
+    padding: 48px 32px 40px;
+    border-radius: 28px;
+    text-align: center;
+    color: #fff;
+    background: linear-gradient(120deg, var(--c1), var(--c2), var(--c3), var(--c4), var(--c1));
+    background-size: 300% 300%;
+    box-shadow: 0 20px 50px rgba(236, 72, 153, 0.30);
+    animation: shine 12s linear infinite, rise 0.7s ease-out both;
+}
+
+.hero h1 {
+    color: #fff;
+    background: none;
+    animation: none;
+    font-size: 3rem;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
+}
+
+.hero h1::after {
+    margin: 16px auto 0;
+    background: rgba(255, 255, 255, 0.85);
+}
+
+.hero p {
+    margin: 0;
+    font-size: 1.15rem;
+    opacity: 0.95;
+}
+
+.hero .hero-emoji {
+    display: inline-block;
+    margin-bottom: 8px;
+    font-size: 3.2rem;
+    line-height: 1;
+    animation: float 3s ease-in-out infinite;
+}
+
+/* 좋아하는 것 : 동그란 알약 모양 */
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 0;
+    list-style: none;
+}
+
+.chips li {
+    margin: 0;
+    padding: 10px 20px;
+    border-radius: 999px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+    font-weight: 700;
+    transition: transform 0.2s;
+}
+
+.chips li:hover {
+    transform: translateY(-4px) scale(1.05);
+}
+
+/* 링크 카드 */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 22px 22px 20px;
+    border-radius: 20px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+    color: var(--text);
+    font-weight: 400;
+    transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+    animation: rise 0.6s ease-out both;
+}
+
+.card:nth-child(2) { animation-delay: 0.1s; }
+.card:nth-child(3) { animation-delay: 0.2s; }
+
+.card:hover {
+    color: var(--text);
+    background: var(--paper);
+    border-color: var(--c2);
+    transform: translateY(-6px) rotate(-1deg);
+    box-shadow: 0 18px 40px rgba(236, 72, 153, 0.28);
+}
+
+.card b {
+    font-size: 1.15rem;
+    background: var(--rainbow);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.card span {
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+.card .card-emoji {
+    font-size: 2rem;
+    line-height: 1.2;
+}
+
+/* =========================================================
+   반응형 디자인 : 화면 크기에 따라 모양 바꾸기
+   @media (max-width: 숫자px) { ... } 는
+   "화면 너비가 이 숫자 이하일 때만 안쪽 규칙을 적용해" 라는 뜻입니다.
+   ========================================================= */
+
+/* 표 칸 안의 긴 글자(코드, 긴 영어 문장)가 화면 밖으로 나가지 않게 */
+th, td {
+    overflow-wrap: anywhere;
+}
+
+/* ---------- 태블릿 (화면 너비 768px 이하) ---------- */
+@media (max-width: 768px) {
+    body {
+        padding: 72px 20px 72px;   /* 위쪽은 스위치와 겹치지 않게 넉넉히 */
+        font-size: 16px;
+    }
+
+    h1 {
+        font-size: 2.2rem;
+    }
+
+    h2 {
+        margin-top: 52px;
+        font-size: 1.35rem;
+    }
+
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+}
+
+/* ---------- 휴대폰 (화면 너비 560px 이하) ---------- */
+@media (max-width: 560px) {
+    body {
+        padding: 68px 16px 64px;
+        font-size: 15.5px;
+        line-height: 1.7;
+    }
+
+    h1 {
+        font-size: 1.85rem;
+    }
+
+    h2 {
+        margin-top: 44px;
+        padding-left: 14px;
+        font-size: 1.2rem;
+    }
+
+    h2::before {
+        width: 5px;
+    }
+
+    /* 목차 : 두 줄 → 한 줄 */
+    h2 + ol {
+        columns: 1;
+        padding: 16px 18px 16px 40px;
+    }
+
+    /* 표 : 칸 여백과 글자를 조금 줄이기 */
+    th, td {
+        padding: 9px 10px;
+        font-size: 0.92rem;
+    }
+
+    pre {
+        padding: 28px 14px 14px;
+        font-size: 0.82rem;
+    }
+
+    blockquote {
+        padding: 14px 16px;
+    }
+
+    hr {
+        margin: 40px 0;
+    }
+
+    /* 스위치 : 조금 작게 */
+    .theme-toggle {
+        top: 12px;
+        right: 12px;
+    }
+
+    /* 첫 페이지 인사 상자 */
+    .hero {
+        padding: 36px 20px 30px;
+        border-radius: 22px;
+    }
+
+    .hero h1 {
+        font-size: 2.1rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+
+    .hero .hero-emoji {
+        font-size: 2.6rem;
+    }
+
+    /* 링크 카드 : 한 줄에 하나씩, 아이콘은 왼쪽에 */
+    .cards {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .card {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        column-gap: 14px;
+        align-items: center;
+        padding: 16px 18px;
+    }
+
+    .card .card-emoji {
+        grid-row: span 2;
+    }
+
+    .chips li {
+        padding: 8px 16px;
+    }
+}
+
+/* ---------- 아주 작은 휴대폰 (화면 너비 360px 이하) ---------- */
+@media (max-width: 360px) {
+    h1 {
+        font-size: 1.6rem;
+    }
+
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+}
